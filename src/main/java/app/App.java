@@ -7,7 +7,9 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    // TODO add support for calculating with decimal numbers
+    // TODO add limits to not be able to type unreasonable things(dots without a number,
+    //  numbers after brackets without operator,...) and to be able to type operators from keyboard
+    //  also fix more complex decimal calculations
 
     public static void main(String[] args) {
         launch(args);

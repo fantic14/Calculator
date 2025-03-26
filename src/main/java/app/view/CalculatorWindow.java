@@ -23,6 +23,7 @@ public class CalculatorWindow extends GridPane {
     private Button opMinus;
     private Button opMultiplication;
     private Button opDivision;
+    private Button btnBackspace;
     private Button btnClear;
     private Button btnComma;
     private Button btnOpenBracket;
@@ -38,8 +39,8 @@ public class CalculatorWindow extends GridPane {
 
     private void action() {
         // upis preko tastature u textfield
-        this.setOnKeyPressed(new NumberEntryAction(this));
-        this.tfResult.setOnKeyPressed(new NumberEntryAction(this));
+        this.setOnKeyPressed(new KeyboardEntryAction(this));
+        this.tfResult.setOnKeyPressed(new KeyboardEntryAction(this));
 
         // clear dugme
         this.btnClear.setOnAction(_ -> {
@@ -78,8 +79,7 @@ public class CalculatorWindow extends GridPane {
             tfResult.setText(tfResult.getText() + "9");
         });
         this.btnComma.setOnAction(_ ->{
-            if (!tfResult.getText().contains("."))
-                tfResult.setText(tfResult.getText() + ".");
+            tfResult.setText(tfResult.getText() + ".");
         });
         this.btnOpenBracket.setOnAction(_ -> {
             tfResult.setText(tfResult.getText() + "(");
@@ -90,6 +90,14 @@ public class CalculatorWindow extends GridPane {
                 tfResult.setText(tfResult.getText() + ")");
                 bracketCnt--;
             }
+        });
+        this.btnBackspace.setOnAction(_ -> {
+            char[] s = this.getTfResult().getText().toCharArray();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < s.length-1; i++){
+                sb.append(s[i]);
+            }
+            this.getTfResult().setText(sb.toString());
         });
 
         // racunska operacija
@@ -104,13 +112,14 @@ public class CalculatorWindow extends GridPane {
 
     private void show() {
         this.add(this.tfResult, 0,0, 4, 1);
-        this.addRow(1, this.btnClear, this.btnOpenBracket, this.btnCloseBracket, this.opDivision);
-        this.addRow(2, this.numSeven, this.numEight, this.numNine, this.opMultiplication);
-        this.addRow(3, this.numFour, this.numFive, this.numSix, this.opMinus);
-        this.addRow(4, this.numOne, this.numTwo, this.numThree, this.opPlus);
-        this.add(this.numZero, 0,5,2,1);
-        this.add(this.btnComma, 2,5);
-        this.add(this.opEquals, 3, 5);
+        this.add(this.btnBackspace, 0, 1, 4, 1);
+        this.addRow(2, this.btnClear, this.btnOpenBracket, this.btnCloseBracket, this.opDivision);
+        this.addRow(3, this.numSeven, this.numEight, this.numNine, this.opMultiplication);
+        this.addRow(4, this.numFour, this.numFive, this.numSix, this.opMinus);
+        this.addRow(5, this.numOne, this.numTwo, this.numThree, this.opPlus);
+        this.add(this.numZero, 0,6,2,1);
+        this.add(this.btnComma, 2,6);
+        this.add(this.opEquals, 3, 6);
         this.setVgap(4);
         this.setHgap(4);
         this.setPadding(new Insets(10,10,10,10));
@@ -149,6 +158,8 @@ public class CalculatorWindow extends GridPane {
         this.opPlus.setPrefSize(40,40);
         this.btnClear = new Button("C");
         this.btnClear.setPrefSize(40,40);
+        this.btnBackspace = new Button("⌫");
+        this.btnBackspace.setPrefSize(172,40);
         this.btnComma = new Button(".");
         this.btnComma.setPrefSize(40,40);
         this.btnOpenBracket = new Button("(");

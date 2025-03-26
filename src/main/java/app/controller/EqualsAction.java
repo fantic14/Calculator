@@ -24,6 +24,8 @@ public class EqualsAction implements EventHandler<ActionEvent> {
     private double numberOne = 0;
     private double numberTwo = 0;
     private double numberThree = 0;
+    private boolean isDecimal = false;
+    private int decimalCnt;
     private int jumpFrom = -1;
     private int jumpTo = -1;
 
@@ -63,6 +65,7 @@ public class EqualsAction implements EventHandler<ActionEvent> {
             }
 
             calcForLoop(j, map.get(")").getFirst());
+            isDecimal = false;
 
             jumpFrom = map.get("(").removeLast();
             jumpTo = map.get(")").removeFirst();
@@ -109,6 +112,7 @@ public class EqualsAction implements EventHandler<ActionEvent> {
             }
 
             calcForLoop(j, tfResult.length());
+            isDecimal = false;
 
             jumpFrom = -1;
             jumpTo = -1;
@@ -175,12 +179,18 @@ public class EqualsAction implements EventHandler<ActionEvent> {
             }
 
             if ((tfResult.charAt(i) >= '0' && tfResult.charAt(i) <= '9') && flagOne) {
-                numberOne = numberOne * 10 + Double.parseDouble(String.valueOf(tfResult.charAt(i)));
+                if (!isDecimal) numberOne = numberOne * 10 + Double.parseDouble(String.valueOf(tfResult.charAt(i)));
+                else numberOne = numberOne + Double.parseDouble(String.valueOf(tfResult.charAt(i)))/Math.pow(10, decimalCnt++);
             } else if ((tfResult.charAt(i) >= '0' && tfResult.charAt(i) <= '9') && flagTwo) {
-                numberTwo = numberTwo * 10 + Double.parseDouble(String.valueOf(tfResult.charAt(i)));
+                if (!isDecimal) numberTwo = numberTwo * 10 + Double.parseDouble(String.valueOf(tfResult.charAt(i)));
+                else numberTwo = numberTwo + Double.parseDouble(String.valueOf(tfResult.charAt(i)))/Math.pow(10, decimalCnt++);
             } else if ((tfResult.charAt(i) >= '0' && tfResult.charAt(i) <= '9') && flagThree) {
-                numberThree = numberThree * 10 + Double.parseDouble(String.valueOf(tfResult.charAt(i)));
-            } else if (tfResult.charAt(i) == '+' || tfResult.charAt(i) == '-') {
+                if (!isDecimal) numberThree = numberThree * 10 + Double.parseDouble(String.valueOf(tfResult.charAt(i)));
+                else numberThree = numberThree + Double.parseDouble(String.valueOf(tfResult.charAt(i)))/Math.pow(10, decimalCnt++);
+            } else if (tfResult.charAt(i) == '.'){
+                isDecimal = true;
+                decimalCnt = 1;
+            }else if (tfResult.charAt(i) == '+' || tfResult.charAt(i) == '-') {
                 if (operatorTwo != '!') {
                     if (operatorTwo == '*')
                         numberTwo *= numberThree;
@@ -208,6 +218,7 @@ public class EqualsAction implements EventHandler<ActionEvent> {
                 flagOne = false;
                 flagTwo = true;
                 flagThree = false;
+                isDecimal = false;
             } else if (tfResult.charAt(i) == '*' || tfResult.charAt(i) == '/') {
                 if (flagThree) {
                     if (operatorTwo == '*')
@@ -235,6 +246,7 @@ public class EqualsAction implements EventHandler<ActionEvent> {
                     flagOne = false;
                     flagTwo = true;
                 }
+                isDecimal = false;
             }
         }
     }

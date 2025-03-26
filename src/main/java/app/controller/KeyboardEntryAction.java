@@ -7,11 +7,11 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.Objects;
 
-public class NumberEntryAction implements EventHandler<KeyEvent> {
+public class KeyboardEntryAction implements EventHandler<KeyEvent> {
 
     private final CalculatorWindow cw;
 
-    public NumberEntryAction(CalculatorWindow calculatorWindow) {
+    public KeyboardEntryAction(CalculatorWindow calculatorWindow) {
         this.cw = calculatorWindow;
     }
 
