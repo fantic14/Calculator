@@ -70,39 +70,8 @@ public class EqualsAction implements EventHandler<ActionEvent> {
             jumpFrom = map.get("(").removeLast();
             jumpTo = map.get(")").removeFirst();
 
-            if (operatorTwo != '!'){
-                switch (operatorTwo){
-                    case '*':
-                        numberTwo *= numberThree;
-                        break;
-                    case '/':
-                        numberTwo /= numberThree;
-                        break;
-                }
-                numberThree = 0;
-                operatorTwo = '!';
-                flagThree = false;
-            }
-            switch (operatorOne) {
-                case '+':
-                    numberOne += numberTwo;
-                    break;
-                case '-':
-                    numberOne -= numberTwo;
-                    break;
-                case '*':
-                    numberOne *= numberTwo;
-                    break;
-                case '/':
-                    numberOne /= numberTwo;
-                    break;
-            }
-            numberTwo = 0;
-            inBracketsResult = numberOne;
-            numberOne = 0;
-            operatorOne = '!';
-            flagTwo = false;
-            flagOne = true;
+            lastTouchAndVariablesReset();
+
         } else {
             j = 0;
             if (tfResult.charAt(0) == '-') {
@@ -116,26 +85,8 @@ public class EqualsAction implements EventHandler<ActionEvent> {
 
             jumpFrom = -1;
             jumpTo = -1;
-            switch (operatorOne) {
-                case '+':
-                    numberOne += numberTwo;
-                    break;
-                case '-':
-                    numberOne -= numberTwo;
-                    break;
-                case '*':
-                    numberOne *= numberTwo;
-                    break;
-                case '/':
-                    numberOne /= numberTwo;
-                    break;
-            }
-            numberTwo = 0;
-            result = numberOne;
-            numberOne = 0;
-            operatorOne = '!';
-            flagTwo = false;
-            flagOne = true;
+
+            lastTouchAndVariablesReset();
         }
     }
 
@@ -257,5 +208,42 @@ public class EqualsAction implements EventHandler<ActionEvent> {
         }
         numberOne = -numberOne;
         return j;
+    }
+
+    private void lastTouchAndVariablesReset() {
+        if (operatorTwo != '!'){
+            switch (operatorTwo){
+                case '*':
+                    numberTwo *= numberThree;
+                    break;
+                case '/':
+                    numberTwo /= numberThree;
+                    break;
+            }
+            numberThree = 0;
+            operatorTwo = '!';
+            flagThree = false;
+        }
+
+        switch (operatorOne) {
+            case '+':
+                numberOne += numberTwo;
+                break;
+            case '-':
+                numberOne -= numberTwo;
+                break;
+            case '*':
+                numberOne *= numberTwo;
+                break;
+            case '/':
+                numberOne /= numberTwo;
+                break;
+        }
+        numberTwo = 0;
+        result = numberOne;
+        numberOne = 0;
+        operatorOne = '!';
+        flagTwo = false;
+        flagOne = true;
     }
 }
